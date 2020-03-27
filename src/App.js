@@ -1,26 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect } from 'react-redux';
+import { userLoginSuccess } from './store/actons/authAction';
+import { userAction } from './store/actons/userAction';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(userLoginSuccess());
+    this.props.dispatch(userAction({ name: 'Bilal', age: 36 }));
+  }
+
+  render() {
+    console.log(this.props);
+    return <h1>This is Reduc architecture</h1>;
+  }
 }
+const mapStateToProps = state => {
+  return {
+    isloggedIn: state.auth.isLoggedIn,
+    successMessage: state.auth.successMessage,
+    user: state.userState.user
+  };
+};
 
-export default App;
+export default connect(mapStateToProps)(App);
